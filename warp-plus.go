@@ -44,12 +44,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	// req.Header.Set("Host", "api.cloudflareclient.com")
-	req.Header.Add("Content-Type", "application/json; charset=UTF-8")
-	req.Header.Add("Connection", "keep-alive")
-	req.Header.Add("Accept-Encoding", "gzip")
-	req.Header.Add("User-Agent", "okhttp/3.12.1")
-	req.Header.Add("Accept", "*/*")
+	req.Header.Set("Host", "api.cloudflareclient.com")
+	req.Header.Set("Content-Type", "application/json; charset=utf-8")
+	req.Header.Set("Connection", "keep-alive")
+	req.Header.Set("Accept-Encoding", "gzip")
+	req.Header.Set("User-Agent", "okhttp/3.12.1")
+	req.Header.Set("Accept", "*/*")
 
 	reqDump, err := httputil.DumpRequestOut(req, true)
 	if err != nil {
@@ -58,22 +58,22 @@ func main() {
 
 	fmt.Printf("REQUEST:\n%s \n", string(reqDump))
 
-	// client := &http.Client{}
-	// resp, err := client.Do(req)
+	client := &http.Client{}
+	resp, err := client.Do(req)
 
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// defer resp.Body.Close()
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
 
-	// fmt.Println(resp.Status)
+	fmt.Println(resp.Status)
 
-	// respDump, err := httputil.DumpResponse(resp, true)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	respDump, err := httputil.DumpResponse(resp, true)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// fmt.Printf("RESPONSE:\n%s", string(respDump))
+	fmt.Printf("RESPONSE:\n%s", string(respDump))
 
 }
 
