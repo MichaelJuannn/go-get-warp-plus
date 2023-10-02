@@ -21,6 +21,7 @@ type BodyType struct {
 
 func main() {
 	var refferer string
+	fmt.Println("Get Warp+ For Free")
 	fmt.Print("Insert Your Client Id \n")
 	fmt.Scan(&refferer)
 	for true {
@@ -66,11 +67,13 @@ func makeWarpReq(refferer string) {
 	resp, err := client.Do(req)
 
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 	defer resp.Body.Close()
 
-	fmt.Println(resp.Status)
+	if resp.StatusCode == 200 {
+		fmt.Println("Successfully Add 1GB to Your Account. Wait 35 Seconds....")
+	}
 }
 
 var seededRand *rand.Rand = rand.New(
