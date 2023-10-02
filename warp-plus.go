@@ -5,10 +5,8 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"log"
 	"math/rand"
 	"net/http"
-	"net/http/httputil"
 	"time"
 )
 
@@ -25,6 +23,13 @@ func main() {
 	var refferer string
 	fmt.Print("Insert Your Client Id")
 	fmt.Scan(&refferer)
+	for true {
+		makeWarpReq(refferer)
+		time.Sleep(35 * time.Second)
+	}
+}
+
+func makeWarpReq(refferer string) {
 	url := fmt.Sprintf("https://api.cloudflareclient.com/v0a%s/reg", digitString(3))
 	install_id := genString(22)
 	body := map[string]any{
@@ -51,13 +56,6 @@ func main() {
 	req.Header.Set("Accept-Encoding", "gzip")
 	req.Header.Set("User-Agent", "okhttp/3.12.1")
 
-	reqDump, err := httputil.DumpRequestOut(req, true)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("REQUEST:\n%s \n", string(reqDump))
-
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: true,
@@ -73,14 +71,6 @@ func main() {
 	defer resp.Body.Close()
 
 	fmt.Println(resp.Status)
-
-	respDump, err := httputil.DumpResponse(resp, true)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("RESPONSE:\n%s", string(respDump))
-
 }
 
 var seededRand *rand.Rand = rand.New(
