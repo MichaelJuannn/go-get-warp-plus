@@ -21,7 +21,7 @@ type BodyType struct {
 
 func main() {
 	var refferer string
-	fmt.Print("Insert Your Client Id")
+	fmt.Print("Insert Your Client Id \n")
 	fmt.Scan(&refferer)
 	for true {
 		makeWarpReq(refferer)
