@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -49,7 +50,6 @@ func main() {
 	req.Header.Set("Connection", "keep-alive")
 	req.Header.Set("Accept-Encoding", "gzip")
 	req.Header.Set("User-Agent", "okhttp/3.12.1")
-	req.Header.Set("Accept", "*/*")
 
 	reqDump, err := httputil.DumpRequestOut(req, true)
 	if err != nil {
@@ -58,11 +58,17 @@ func main() {
 
 	fmt.Printf("REQUEST:\n%s \n", string(reqDump))
 
-	client := &http.Client{}
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
+	}
+
+	client := &http.Client{Transport: tr}
 	resp, err := client.Do(req)
 
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	defer resp.Body.Close()
 
