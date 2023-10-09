@@ -11,12 +11,14 @@ import (
 )
 
 type BodyType struct {
-	key          string
-	install_id   string
-	fcm_token    string
-	referrer     string
-	warp_enabled bool
-	tos          string
+	Key         string `json:"key"`
+	InstallID   string `json:"install_id"`
+	FcmToken    string `json:"fcm_token"`
+	Referrer    string `json:"referrer"`
+	WarpEnabled bool   `json:"warp_enabled"`
+	Tos         string `json:"tos"`
+	Type        string `json:"type"`
+	Locale      string `json:"locale"`
 }
 
 func main() {
@@ -33,16 +35,17 @@ func main() {
 func makeWarpReq(refferer string) {
 	url := fmt.Sprintf("https://api.cloudflareclient.com/v0a%s/reg", digitString(3))
 	install_id := genString(22)
-	body := map[string]any{
-		"key":          fmt.Sprintf("%s=", genString(43)),
-		"install_id":   install_id,
-		"fcm_token":    fmt.Sprintf("%s:APA91b%s", install_id, genString(134)),
-		"referrer":     refferer,
-		"warp_enabled": false,
-		"tos":          fmt.Sprintf("%s+02:00", time.Now().Format("2006-01-02T15:04:05.071")), // iso date
-		"type":         "Android",
-		"locale":       "es_ES",
+	body := BodyType{
+		Key:         fmt.Sprintf("%s=", genString(43)),
+		InstallID:   install_id,
+		FcmToken:    fmt.Sprintf("%s:APA91b%s", install_id, genString(134)),
+		Referrer:    refferer,
+		WarpEnabled: false,
+		Tos:         fmt.Sprintf("%s+02:00", time.Now().Format("2006-01-02T15:04:05.071")), // iso date
+		Type:        "Android",
+		Locale:      "es_ES",
 	}
+
 	reqBody, err := json.Marshal(body)
 	if err != nil {
 		panic(err)
