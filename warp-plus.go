@@ -27,19 +27,19 @@ func main() {
 	fmt.Print("Insert Your Client Id \n")
 	fmt.Scan(&refferer)
 	for true {
-		makeWarpReq(refferer)
+		makeWarpReq(&refferer)
 		time.Sleep(35 * time.Second)
 	}
 }
 
-func makeWarpReq(refferer string) {
+func makeWarpReq(refferer *string) {
 	url := fmt.Sprintf("https://api.cloudflareclient.com/v0a%s/reg", digitString(3))
 	install_id := genString(22)
 	body := BodyType{
 		Key:         fmt.Sprintf("%s=", genString(43)),
 		InstallID:   install_id,
 		FcmToken:    fmt.Sprintf("%s:APA91b%s", install_id, genString(134)),
-		Referrer:    refferer,
+		Referrer:    *refferer,
 		WarpEnabled: false,
 		Tos:         fmt.Sprintf("%s+02:00", time.Now().Format("2006-01-02T15:04:05.071")), // iso date
 		Type:        "Android",
